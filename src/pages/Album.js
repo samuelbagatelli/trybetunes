@@ -44,6 +44,8 @@ class Album extends Component {
               key={ element.trackId }
               trackName={ element.trackName }
               previewUrl={ element.previewUrl }
+              trackId={ element.trackId }
+              trackObj={ element }
             />
           ))
         }
