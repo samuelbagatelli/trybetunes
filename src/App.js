@@ -64,6 +64,7 @@ class App extends React.Component {
             <Route path="/search">
               <Search
                 loading={ loading }
+                handleSubmit={ this.handleSubmit }
               />
             </Route>
             <Route path="/favorites">
