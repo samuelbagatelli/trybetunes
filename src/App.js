@@ -55,15 +55,23 @@ class App extends React.Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <Route path="/album/:id" component={ Album } />
-            <Route path="/profile/edit" component={ ProfileEdit } />
+            <Route path="/album/:id">
+              <Album />
+            </Route>
+            <Route path="/profile/edit">
+              <ProfileEdit />
+            </Route>
             <Route path="/search">
               <Search
                 loading={ loading }
               />
             </Route>
-            <Route path="/favorites" component={ Favorites } />
-            <Route path="/profile" component={ Profile } />
+            <Route path="/favorites">
+              <Favorites />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
             <Route exact path="/">
               <Login
                 handleSubmit={ this.handleSubmit }
@@ -73,7 +81,9 @@ class App extends React.Component {
                 loading={ loading }
               />
             </Route>
-            <Route path="*" component={ NotFound } />
+            <Route path="*">
+              <NotFound />
+            </Route>
           </Switch>
         </BrowserRouter>
       </div>
