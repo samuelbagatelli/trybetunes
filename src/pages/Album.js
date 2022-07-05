@@ -50,14 +50,8 @@ class Album extends Component {
     });
   }
 
-  checked = (element) => {
-    const { favoriteSongs } = this.state;
-
-    return favoriteSongs.some((obj) => obj.trackId === element.trackId);
-  }
-
   render() {
-    const { artistName, collection, albumContent, loading } = this.state;
+    const { artistName, collection, albumContent, loading, favoriteSongs } = this.state;
 
     return (
       <div data-testid="page-album">
@@ -75,7 +69,7 @@ class Album extends Component {
                     previewUrl={ element.previewUrl }
                     trackId={ element.trackId }
                     trackObj={ element }
-                    checked={ this.checked(element) }
+                    favoriteSongs={ favoriteSongs }
                   />
                 ))
               }
