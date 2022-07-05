@@ -2,19 +2,28 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
+import Loading from '../components/Loading';
 
 class Album extends Component {
   constructor() {
     super();
 
     this.state = {
+      loading: false,
       artistName: '',
       collection: '',
       albumContent: [],
+      favoriteSongs: [],
     };
   }
 
   async componentDidMount() {
+    this.saveMusics();
+    this.favoriteSongs();
+  }
+
+  saveMusics = async () => {
     const { pathname } = window.location;
     const URL_ID_FORMAT = 7;
     const collectionId = pathname.slice(URL_ID_FORMAT, pathname.length + 1);
@@ -30,25 +39,48 @@ class Album extends Component {
     });
   }
 
+  favoriteSongs = () => {
+    this.setState({ loading: true }, async () => {
+      const response = await getFavoriteSongs();
+
+      this.setState({
+        favoriteSongs: response,
+        loading: false,
+      });
+    });
+  }
+
+  checked = (element) => {
+    const { favoriteSongs } = this.state;
+
+    return favoriteSongs.some((obj) => obj.trackId === element.trackId);
+  }
+
   render() {
-    const { artistName, collection, albumContent } = this.state;
+    const { artistName, collection, albumContent, loading } = this.state;
 
     return (
       <div data-testid="page-album">
         <Header />
-        <h2 data-testid="artist-name">{artistName}</h2>
-        <h3 data-testid="album-name">{collection}</h3>
-        {
-          albumContent.map((element) => (
-            <MusicCard
-              key={ element.trackId }
-              trackName={ element.trackName }
-              previewUrl={ element.previewUrl }
-              trackId={ element.trackId }
-              trackObj={ element }
-            />
-          ))
-        }
+        { loading ? <Loading />
+          : (
+            <>
+              <h2 data-testid="artist-name">{artistName}</h2>
+              <h3 data-testid="album-name">{collection}</h3>
+              {
+                albumContent.map((element) => (
+                  <MusicCard
+                    key={ element.trackId }
+                    trackName={ element.trackName }
+                    previewUrl={ element.previewUrl }
+                    trackId={ element.trackId }
+                    trackObj={ element }
+                    checked={ this.checked(element) }
+                  />
+                ))
+              }
+            </>
+          )}
       </div>
     );
   }
