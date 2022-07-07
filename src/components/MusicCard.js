@@ -24,11 +24,11 @@ class MusicCard extends Component {
   }
 
   handleChange = () => {
-    const { trackObj } = this.state;
+    const { trackObj, check } = this.state;
 
     this.setState({
       loading: true,
-      check: true,
+      check: !check,
     }, async () => {
       await addSong(trackObj);
       this.setState({ loading: false });
